@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>羊毛-Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* 背景漸層顏色 */
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 580px;
+            text-align: center;
+        }
+
+        /* 標題與簡介 */
+        .profile-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-bio {
+            font-size: 15px;
+            margin-bottom: 40px;
+            opacity: 0.85;
+            line-height: 1.5;
+        }
+
+        /* 連結按鈕容器 */
+        #links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 按鈕樣式 */
+        .link-card {
+            background-color: white;
+            color: #1e1e1e;
+            padding: 18px 20px;
+            border-radius: 30px; /* 改為 30px 變成圓角矩形 */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid transparent;
+        }
+
+        .link-card:hover {
+            transform: translateY(-2px);
+            background-color: #f8f9fa;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* 底部裝飾 */
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="profile-name">@羊毛</h1>
+        <p class="profile-bio">作品快速連結</p>
+
+        <div id="links-container">
+            </div>
+
+        <div class="footer">© cat_hat_mao</div>
+    </div>
+
+    <script>
+        // 在這裡新增、減少或修改連結
+        const links = [
+            { name: "😀 歷屆試題解題查詢", url: "https://maocat17.github.io/CAP-questions-solution/" },
+            { name: "📸 錯題掃描器", url: "https://maocat17.github.io/Scanner/" },
+            { name: "📘 錯題圖片集合器", url: "https://maocat17.github.io/Wrong-question-book/" },
+            { name: "💬 生物五大界配對練習", url: "https://maocat17.github.io/biology-matching/" },
+            { name: "📩 程式碼格式對齊", url: "https://maocat17.github.io/format-code/" }
+        ];
+
+        // 自動生成 HTML 的功能，請勿更動
+        const container = document.getElementById('links-container');
+        links.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.className = 'link-card';
+            a.target = '_blank';
+            a.textContent = link.name;
+            container.appendChild(a);
+        });
+    </script>
+
+</body>
+</html>
