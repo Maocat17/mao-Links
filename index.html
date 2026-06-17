@@ -5,21 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>羊毛-Links</title>
     <style>
+        /* ==========================================
+           全域與基礎樣式設定
+           ========================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: "PingFang TC", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
         body {
-            /* 背景漸層顏色 */
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            /* 更有質感的漸層背景 */
+            background: linear-gradient(135deg, #141e30 0%, #243b55 100%);
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 60px 20px;
+            padding: 50px 20px;
             color: white;
         }
 
@@ -31,102 +34,362 @@
 
         /* 標題與簡介 */
         .profile-name {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .profile-bio {
             font-size: 15px;
-            margin-bottom: 40px;
-            opacity: 0.85;
-            line-height: 1.5;
+            margin-bottom: 35px;
+            opacity: 0.8;
+            font-weight: 300;
         }
 
-        /* 連結按鈕容器 */
-        #links-container {
+        /* 主容器 */
+        #main-container {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
 
-        /* 按鈕樣式 */
+        /* ==========================================
+           連結按鈕樣式 (一般連結)
+           ========================================== */
         .link-card {
-            background-color: white;
-            color: #1e1e1e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: #2c3e50; /* 深色文字，在馬卡龍底色上較易閱讀 */
             padding: 18px 20px;
-            border-radius: 30px; /* 改為 30px 變成圓角矩形 */
+            border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             font-size: 16px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
         }
 
         .link-card:hover {
-            transform: translateY(-2px);
-            background-color: #f8f9fa;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            filter: brightness(1.05); /* 滑過時微亮 */
         }
 
-        /* 底部裝飾 */
+        /* ICON 圖示區域 */
+        .link-icon-container {
+            position: absolute;
+            left: 22px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px; /* Emoji 大小 */
+        }
+
+        .link-icon-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 確保圖片不變形 */
+            border-radius: 4px;
+        }
+
+        /* ==========================================
+           群組樣式 (毛玻璃風格)
+           ========================================== */
+        .group-wrapper {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .group-header {
+            padding: 18px 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            user-select: none;
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.3s;
+        }
+
+        .group-header:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .group-content {
+            padding: 0 16px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            display: none; /* 預設隱藏，由 JS 控制 */
+        }
+
+        /* 展開與收合的箭頭動畫 */
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .group-wrapper.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 底部版權 */
         .footer {
             margin-top: 50px;
-            font-size: 12px;
-            opacity: 0.5;
+            font-size: 13px;
+            opacity: 0.6;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- 上方個人資訊 -->
         <h1 class="profile-name">@羊毛</h1>
         <p class="profile-bio">作品快速連結</p>
 
-        <div id="links-container">
-            </div>
+        <!-- 連結與群組生成的容器 -->
+        <div id="main-container"></div>
 
         <div class="footer">© cat_hat_mao</div>
     </div>
 
     <script>
-        // 在這裡新增、減少或修改連結
-        const links = [
-            { name: "✨ 程式碼格式對齊", url: "https://maocat17.github.io/format-code/" },
-            { name: "📩 SET 遊戲解答計算器", url: "https://maocat17.github.io/SET-game/" },
-            { name: "🧲 IBON代碼提取器", url: "https://maocat17.github.io/IBON-code/" },
-            { name: "🖨️ 簡易圖片編輯(文字不支援)", url: "https://maocat17.github.io/basic-image-editing/"},
-            { name: "💬 Quizlet單字卡編輯", url: "https://maocat17.github.io/quizlet-card-edit/" },
-            { name: "🧭 5-5益智拼圖紀錄系統", url: "https://maocat17.github.io/puzzle1-record/"},
-            { name: "🕹️ 5-5益智拼圖解答系統", url: "https://maocat17.github.io/puzzle1-solution/"},
-            { name: "😀 歷屆試題解題查詢", url: "https://maocat17.github.io/CAP-questions-solution/" },
-            { name: "📸 錯題掃描器", url: "https://maocat17.github.io/Scanner/" },
-            { name: "📘 錯題圖片集合器", url: "https://maocat17.github.io/Wrong-question-book/" },
-            { name: "💬 生物五大界配對練習", url: "https://maocat17.github.io/biology-matching/" },
-            { name: "✅ 答案卡", url: "https://maocat17.github.io/Answer-Sheet" },
-            { name: "✅ 答案卡對答案", url: "https://maocat17.github.io/check-the-answers" },
-            { name: "🤩 三視圖積木出題", url: "https://maocat17.github.io/3D-blocks-puzzle/" },
-            { name: "", url: "https://maocat17.github.io/" },
-            { name: "", url: "https://maocat17.github.io/" },
-            { name: "", url: "https://maocat17.github.io/" },
-            { name: "", url: "https://maocat17.github.io/" },
-            { name: "", url: "https://maocat17.github.io/" },
-            { name: "", url: "https://maocat17.github.io/" }
+        // =========================================================================
+        // ⬇️⬇️⬇️ 請在這裡編輯您的連結與群組資料 ⬇️⬇️⬇️
+        // =========================================================================
+        
+        /*
+          【設定說明】
+          - 若要新增一般連結：使用 { name: "名稱", url: "網址", icon: "圖示", color: "顏色" }
+          - 若要新增群組：使用 { groupName: "群組名稱", defaultOpen: true/false, links: [ 群組內的連結... ] }
+          
+          【顏色選項 (color)】支援淡淡的馬卡龍色：
+            "white" (白), "red" (紅), "orange" (橘), "yellow" (黃), 
+            "green" (綠), "blue" (藍), "purple" (紫), "pink" (粉)
+            * 也可以輸入自訂色碼，例如 "#E8F8F5"，若留空或打錯都會預設為白色。
+            
+          【圖示選項 (icon)】
+            可以輸入 Emoji (例如 "✨", "📸")，或是輸入圖片網址 (例如 "https://.../icon.png")。
+            若不需要圖示，請留空 ""。
+        */
+
+        const myData = [
+            
+            // 範例：單一連結 (沒有包在群組裡)
+            { 
+                name: "✨ 程式碼格式對齊", 
+                url: "https://maocat17.github.io/format-code/", 
+                icon: "✨", 
+                color: "pink" 
+            },
+
+            // 範例：群組 1 (益智遊戲)
+            {
+                groupName: "🎮 益智遊戲與解答",
+                defaultOpen: true, // true 表示預設展開，false 表示預設收合
+                links: [
+                    { name: "SET 遊戲解答計算器", url: "https://maocat17.github.io/SET-game/", icon: "📩", color: "blue" },
+                    { name: "5-5益智拼圖紀錄系統", url: "https://maocat17.github.io/puzzle1-record/", icon: "🧭", color: "green" },
+                    { name: "5-5益智拼圖解答系統", url: "https://maocat17.github.io/puzzle1-solution/", icon: "🕹️", color: "purple" },
+                    { name: "三視圖積木出題", url: "https://maocat17.github.io/3D-blocks-puzzle/", icon: "🤩", color: "orange" }
+                ]
+            },
+
+            // 範例：群組 2 (學習與工具)
+            {
+                groupName: "📚 學習與考試工具",
+                defaultOpen: false, // 預設為收合
+                links: [
+                    { name: "歷屆試題解題查詢", url: "https://maocat17.github.io/CAP-questions-solution/", icon: "😀", color: "yellow" },
+                    { name: "錯題掃描器", url: "https://maocat17.github.io/Scanner/", icon: "📸", color: "red" },
+                    { name: "錯題圖片集合器", url: "https://maocat17.github.io/Wrong-question-book/", icon: "📘", color: "blue" },
+                    { name: "生物五大界配對練習", url: "https://maocat17.github.io/biology-matching/", icon: "💬", color: "green" },
+                    { name: "答案卡", url: "https://maocat17.github.io/Answer-Sheet", icon: "✅", color: "white" },
+                    { name: "答案卡對答案", url: "https://maocat17.github.io/check-the-answers", icon: "✅", color: "white" }
+                ]
+            },
+
+            // 範例：群組 3 (其他小工具)
+            {
+                groupName: "🔧 其他小工具",
+                defaultOpen: false, 
+                links: [
+                    { name: "IBON代碼提取器", url: "https://maocat17.github.io/IBON-code/", icon: "🧲", color: "purple" },
+                    { name: "簡易圖片編輯(文字不支援)", url: "https://maocat17.github.io/basic-image-editing/", icon: "🖨️", color: "pink" },
+                    { name: "Quizlet單字卡編輯", url: "https://maocat17.github.io/quizlet-card-edit/", icon: "💬", color: "blue" }
+                ]
+            }
         ];
 
-        // 自動生成 HTML 的功能，請勿更動
-        const container = document.getElementById('links-container');
-        links.forEach(link => {
+        // =========================================================================
+        // ⬆️⬆️⬆️ 編輯區結束 ⬆️⬆️⬆️
+        // 以下為系統自動生成程式碼，如無特殊需求請勿更動
+        // =========================================================================
+
+        // 馬卡龍色系對照表
+        const macaronColors = {
+            white: "#ffffff",
+            red: "#ffb3ba",
+            orange: "#ffdfba",
+            yellow: "#ffffba",
+            green: "#baffc9",
+            blue: "#bae1ff",
+            purple: "#e2cbff",
+            pink: "#ffc6ff"
+        };
+
+        // 處理顏色的函式
+        function resolveColor(colorInput) {
+            if (!colorInput) return macaronColors.white; // 空白預設為白色
+            
+            const str = colorInput.trim().toLowerCase();
+            
+            // 檢查是否為英文單字對應的顏色
+            if (macaronColors[str]) {
+                return macaronColors[str];
+            }
+            
+            // 檢查是否為正確的 Hex 色碼 (例如: #FFF 或 #FFFFFF)
+            const hexRegex = /^#([0-9A-F]{3}){1,2}$/i;
+            if (hexRegex.test(str)) {
+                return str;
+            }
+            
+            // 格式錯誤則預設為白色
+            return macaronColors.white;
+        }
+
+        // 建立 ICON 元素的函式
+        function createIconElement(iconInput) {
+            if (!iconInput) return null; // 沒有設定 ICON
+            
+            const str = iconInput.trim();
+            const iconContainer = document.createElement('div');
+            iconContainer.className = 'link-icon-container';
+
+            // 判斷是否為圖片網址 (以 http 或 data:image 開頭)
+            if (str.startsWith('http') || str.startsWith('data:image')) {
+                const img = document.createElement('img');
+                img.src = str;
+                img.className = 'link-icon-img';
+                img.alt = 'icon';
+                iconContainer.appendChild(img);
+            } else {
+                // 否則視為 Emoji 等文字符號
+                const span = document.createElement('span');
+                span.textContent = str;
+                iconContainer.appendChild(span);
+            }
+            return iconContainer;
+        }
+
+        // 建立單一連結按鈕的函式
+        function createLinkButton(linkData) {
             const a = document.createElement('a');
-            a.href = link.url;
+            a.href = linkData.url;
             a.className = 'link-card';
             a.target = '_blank';
-            a.textContent = link.name;
-            container.appendChild(a);
+            a.style.backgroundColor = resolveColor(linkData.color);
+
+            // 加入 ICON
+            const iconEl = createIconElement(linkData.icon);
+            if (iconEl) {
+                a.appendChild(iconEl);
+            }
+
+            // 加入文字
+            const textSpan = document.createElement('span');
+            textSpan.textContent = linkData.name;
+            a.appendChild(textSpan);
+
+            return a;
+        }
+
+        // 群組收合/展開的控制邏輯
+        window.toggleGroup = function(headerElement) {
+            const wrapper = headerElement.parentElement;
+            const content = wrapper.querySelector('.group-content');
+            
+            // 切換狀態
+            wrapper.classList.toggle('open');
+            
+            if (wrapper.classList.contains('open')) {
+                content.style.display = 'flex';
+            } else {
+                content.style.display = 'none';
+            }
+        };
+
+        // 核心：繪製整個畫面
+        const container = document.getElementById('main-container');
+
+        myData.forEach(item => {
+            // 判斷是否為「群組」
+            if (item.groupName) {
+                const groupWrapper = document.createElement('div');
+                groupWrapper.className = 'group-wrapper';
+                if (item.defaultOpen) {
+                    groupWrapper.classList.add('open');
+                }
+
+                // 建立群組標題
+                const groupHeader = document.createElement('div');
+                groupHeader.className = 'group-header';
+                groupHeader.setAttribute('onclick', 'toggleGroup(this)');
+                
+                const titleSpan = document.createElement('span');
+                titleSpan.textContent = item.groupName;
+                
+                const arrowSpan = document.createElement('span');
+                arrowSpan.className = 'toggle-icon';
+                arrowSpan.innerHTML = '▼'; // 箭頭圖示
+
+                groupHeader.appendChild(titleSpan);
+                groupHeader.appendChild(arrowSpan);
+
+                // 建立群組內容區
+                const groupContent = document.createElement('div');
+                groupContent.className = 'group-content';
+                if (item.defaultOpen) {
+                    groupContent.style.display = 'flex';
+                }
+
+                // 將群組內的連結加入
+                if (item.links && item.links.length > 0) {
+                    item.links.forEach(link => {
+                        groupContent.appendChild(createLinkButton(link));
+                    });
+                }
+
+                groupWrapper.appendChild(groupHeader);
+                groupWrapper.appendChild(groupContent);
+                container.appendChild(groupWrapper);
+
+            } else {
+                // 如果不是群組，就當作一般連結直接放入最外層
+                container.appendChild(createLinkButton(item));
+            }
         });
     </script>
-
 </body>
 </html>
